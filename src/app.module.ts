@@ -5,6 +5,7 @@ import { User } from './users/entities/user.entity';
 import { Project } from './projects/entities/project.entity';
 import { Task } from './tasks/entities/task.entity';
 import { AuthModule } from './auth/auth.module';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -26,7 +27,8 @@ import { AuthModule } from './auth/auth.module';
       }),
       inject: [ConfigService],
     }),
-    AuthModule,
+   AuthModule,
+UsersModule,
   ],
 })
 export class AppModule {}
