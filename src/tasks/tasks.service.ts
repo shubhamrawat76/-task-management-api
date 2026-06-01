@@ -24,7 +24,7 @@ export class TasksService {
       description: dto.description,
       priority: dto.priority,
       project: { id: dto.projectId },
-      assignee: dto.assigneeId ? { id: dto.assigneeId } : null,
+      assignee: dto.assigneeId ? { id: dto.assigneeId } : undefined,
       createdBy: { id: userId },
     });
     return this.taskRepository.save(task);
