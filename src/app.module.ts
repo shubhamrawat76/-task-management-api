@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { ClassSerializerInterceptor } from '@nestjs/common';
 import { User } from './users/entities/user.entity';
 import { Project } from './projects/entities/project.entity';
 import { Task } from './tasks/entities/task.entity';
@@ -14,7 +16,6 @@ import { TasksModule } from './tasks/tasks.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
@@ -24,13 +25,21 @@ import { TasksModule } from './tasks/tasks.module';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [User, Project,Task],
+        entities: [User, Project, Task],
         synchronize: true,
       }),
       inject: [ConfigService],
     }),
-   AuthModule,
-UsersModule,ProjectsModule,TasksModule
+    AuthModule,
+    UsersModule,
+    ProjectsModule,
+    TasksModule,
+  ],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: ClassSerializerInterceptor,
+    },
   ],
 })
 export class AppModule {}
